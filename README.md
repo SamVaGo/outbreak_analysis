@@ -25,6 +25,8 @@ conda deactivate
 ````
 
 ## IQTree
+````
 conda activate iqtree
 iqtree -s /Users/sam/phd/serratia/panaroo/core_gene_alignment_filtered.aln -T AUTO -ntmax 12
 conda deactivate
+````
