@@ -18,6 +18,8 @@ find /Users/sam/phd/serratia/belgium_outbreaks/new_genomes/ -type f -name "*.gff
 ````
 
 ## panaroo
+
 conda activate panaroo
-panaroo -i *.gff -o ./results/ --clean-mode strict -a pan -t 12
+panaroo -i /Users/sam/phd/serratia/belgium_outbreaks/gff3/*.gff3 -o /Users/sam/phd/serratia/belgium_outbreaks/panaroo2025/ --remove-invalid-genes --clean-mode strict -a pan -t 12
 conda deactivate
+
