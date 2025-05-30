@@ -23,3 +23,8 @@ conda activate panaroo
 panaroo -i /Users/sam/phd/serratia/belgium_outbreaks/gff3/*.gff3 -o /Users/sam/phd/serratia/belgium_outbreaks/panaroo2025/ --remove-invalid-genes --clean-mode strict -a pan -t 12
 conda deactivate
 ````
+
+## IQTree
+conda activate iqtree
+iqtree -s /Users/sam/phd/serratia/panaroo/core_gene_alignment_filtered.aln -T AUTO -ntmax 12
+conda deactivate
