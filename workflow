@@ -14,7 +14,7 @@ conda deactivate
 ````
 # move gff3 files
 ````
-find /Users/sam/phd/clos/bakta -type f -name "*.gff3" -exec cp {} /Users/sam/phd/clos/gff3/ \;
+find /Users/sam/phd/serratia/belgium_outbreaks/new_genomes/ -type f -name "*.gff3" -exec cp {} /Users/sam/phd/serratia/belgium_outbreaks/gff3/ \;
 ````
 
 
