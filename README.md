@@ -14,19 +14,32 @@ conda deactivate
 ````
 ### move gff3 files
 ````
-find /Users/sam/phd/serratia/belgium_outbreaks/new_genomes/ -type f -name "*.gff3" -exec cp {} /Users/sam/phd/serratia/belgium_outbreaks/gff3/ \;
+find /Users/sam/phd/serratia/belgium_outbreaks/MRSA/bakta/ -type f -name "*.gff3" -exec cp {} /Users/sam/phd/serratia/belgium_outbreaks/MRSA/gff3/ \;
+````
+
+## parsnp
+````
+parsnp -r /Users/sam/phd/serratia/belgium_outbreaks/reference_genome/ELP1_10.fna -d /Users/sam/phd/serratia/belgium_outbreaks/genomes -p 12
+harvesttools -x parsnp.xmfa -M parsnp.fasta
 ````
 
 ## panaroo
 ````
 conda activate panaroo
-panaroo -i /Users/sam/phd/serratia/belgium_outbreaks/gff3/*.gff3 -o /Users/sam/phd/serratia/belgium_outbreaks/panaroo2025/ --remove-invalid-genes --clean-mode strict -a pan -t 12
+panaroo -i /Users/sam/phd/serratia/belgium_outbreaks/MRSA/gff3/*.gff3 -o /Users/sam/phd/serratia/belgium_outbreaks/MRSA/panaroo/ --remove-invalid-genes --clean-mode strict -a pan -t 12
 conda deactivate
 ````
 
 ## IQTree
 ````
 conda activate iqtree
-iqtree -s /Users/sam/phd/serratia/panaroo/core_gene_alignment_filtered.aln -T AUTO -ntmax 12
+iqtree -s /Users/sam/phd/serratia/belgium_outbreaks/MRSA/panaroo/core_gene_alignment_filtered.aln -m MFP -safe -T AUTO -ntmax 12
+iqtree -s /Users/sam/phd/serratia/belgium_outbreaks/MRSA/panaroo/core_gene_alignment_filtered.aln -T AUTO -ntmax 12
 conda deactivate
 ````
+
+## snp_dists
+````
+conda activate snp-dists
+snp-dists /Users/sam/phd/serratia/belgium_outbreaks/MRSA/panaroo/core_gene_alignment_filtered.aln
+
