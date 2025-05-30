@@ -42,4 +42,35 @@ conda deactivate
 ````
 conda activate snp-dists
 snp-dists /Users/sam/phd/serratia/belgium_outbreaks/MRSA/panaroo/core_gene_alignment_filtered.aln > /Users/sam/phd/serratia/belgium_outbreaks/MRSA/snp_dist.tsv
+conda deactivate
 ````
+
+# cg/wgMLST using chewbbaca
+````
+conda activate chewbbaca
+````
+
+## Create a wgMLST schema
+````
+CreateSchema -i /path/to/InputAssembliesFolder -o /path/to/OutputFolder --n SchemaName --ptf /path/to/ProdigalTrainingFile
+````
+
+## AlleleCall - Determine the allelic profiles of a set of genomes
+````
+AlleleCall -i /path/to/InputAssembliesFolder -g /path/to/SchemaFolder -o /path/to/OutputFolder --cpu 4
+````
+
+## ExtractCgMLST - Determine the set of loci that constitute the core genome
+````
+ExtractCgMLST -i /path/to/AlleleCallResultsFolder/results_alleles.tsv -o /path/to/OutputFolder
+````
+
+````
+conda deactivate
+````
+
+
+
+
+
+
