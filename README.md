@@ -52,17 +52,17 @@ conda activate chewbbaca
 
 ## Create a wgMLST schema
 ````
-CreateSchema -i /path/to/InputAssembliesFolder -o /path/to/OutputFolder --n SchemaName --ptf /path/to/ProdigalTrainingFile
+chewBBACA.py CreateSchema -i /Users/sam/phd/serratia/belgium_outbreaks/MRSA/genomes -o /Users/sam/phd/serratia/belgium_outbreaks/MRSA/chewbbaca/schema --ptf /Users/sam/phd/serratia/belgium_outbreaks/MRSA/chewbbaca/Staphylococcus_aureus.trn
 ````
 
 ## AlleleCall - Determine the allelic profiles of a set of genomes
 ````
-AlleleCall -i /path/to/InputAssembliesFolder -g /path/to/SchemaFolder -o /path/to/OutputFolder --cpu 4
+chewBBACA.py AlleleCall -i /Users/sam/phd/serratia/belgium_outbreaks/MRSA/genomes -g /Users/sam/phd/serratia/belgium_outbreaks/MRSA/chewbbaca/schema/schema_seed -o /Users/sam/phd/serratia/belgium_outbreaks/MRSA/chewbbaca/results_wgMLST --cpu 12
 ````
 
 ## ExtractCgMLST - Determine the set of loci that constitute the core genome
 ````
-ExtractCgMLST -i /path/to/AlleleCallResultsFolder/results_alleles.tsv -o /path/to/OutputFolder
+chewBBACA.py ExtractCgMLST -i /Users/sam/phd/serratia/belgium_outbreaks/MRSA/chewbbaca/results_wgMLST/results_alleles.tsv -o /Users/sam/phd/serratia/belgium_outbreaks/MRSA/chewbbaca/results_cgMLST
 ````
 
 ````
