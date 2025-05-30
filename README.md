@@ -41,5 +41,5 @@ conda deactivate
 ## snp_dists
 ````
 conda activate snp-dists
-snp-dists /Users/sam/phd/serratia/belgium_outbreaks/MRSA/panaroo/core_gene_alignment_filtered.aln
+snp-dists /Users/sam/phd/serratia/belgium_outbreaks/MRSA/panaroo/core_gene_alignment_filtered.aln > /Users/sam/phd/serratia/belgium_outbreaks/MRSA/snp_dist.tsv
 
