@@ -77,7 +77,7 @@ conda deactivate
 genome_folder <- "/path/to/your/genomes"
 
 # List all FASTA files (adjust pattern if needed, e.g., .fa, .fasta, .fna)
-genome_files <- list.files(path = genome_folder, pattern = "\\.(fa|fasta|fna)$", full.names = TRUE)
+genome_files <- list.files(path = genome_folder, pattern = "\\.(fa|fasta|fna|fastq)$", full.names = TRUE)
 
 # Optional: sort files alphabetically
 genome_files <- sort(genome_files)
