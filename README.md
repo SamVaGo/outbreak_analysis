@@ -107,19 +107,34 @@ conda deactivate
 ## snippy
 ### prepare snippy list
 ````
-### Snippy preparation
-# Set the folder where your genomes are located
-genome_folder <- "/path/to/your/genomes"
+# Set the folder where your trimmed FASTQ files are located
+fastq_folder <- "/path/to/your/trimmed_fastq"
 
-# List all FASTA files (adjust pattern if needed, e.g., .fa, .fasta, .fna)
-genome_files <- list.files(path = genome_folder, pattern = "\\.(fa|fasta|fna|fastq)$", full.names = TRUE)
+# List all R1 (forward) reads
+r1_files <- list.files(path = fastq_folder, pattern = "_1_val_1\\.fq\\.gz$", full.names = TRUE)
 
-# Optional: sort files alphabetically
-genome_files <- sort(genome_files)
+# Extract isolate names (before _1_val_1)
+isolate_names <- sub("_1_val_1\\.fq\\.gz$", "", basename(r1_files))
 
-# Output list to a text file
-output_file <- file.path(genome_folder, "genome_list.txt")
-writeLines(genome_files, con = output_file)
+# Construct matching R2 file paths
+r2_files <- file.path(fastq_folder, paste0(isolate_names, "_2_val_2.fq.gz"))
+
+# Sanity check: ensure R2 files exist
+if (!all(file.exists(r2_files))) {
+  stop("Some R2 files are missing!")
+}
+
+# Create a data frame
+snippy_list <- data.frame(
+  Isolate = isolate_names,
+  R1 = r1_files,
+  R2 = r2_files
+)
+
+# Write to a tab-delimited text file
+output_file <- file.path(fastq_folder, "snippy_samples.tsv")
+write.table(snippy_list, file = output_file, sep = "\t", quote = FALSE, row.names = FALSE, col.names = FALSE)
+
 ````
 ### run snippy
 ````
