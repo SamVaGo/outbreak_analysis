@@ -72,9 +72,6 @@ conda deactivate
 ## preparation pipeline
 ### trimgalore
 ````
-# Create folder for FastQC results
-mkdir -p fastqc_out
-
 conda activate trimgalore
 # Loop through all *_R1.fastq.gz (or _1.fastq) files and find matching pairs
 for r1 in *_1*.fastq.gz
@@ -95,15 +92,14 @@ do
         echo "Warning: Missing R2 for $base"
     fi
 done
-
-# Move all FastQC output files to fastqc_out/
-mv *_fastqc* fastqc_out/
 conda deactivate
 ````
 ### multiqc
 ````
 conda activate multiqc
-multiqc fastqc_out -o multiqc_out
+mkdir -p fastqc_out
+fastqc *.fq.gz -o fastqc_out -t 12
+multiqc fastqc_out -o multiqc_out -t 12
 conda deactivate
 ````
 
