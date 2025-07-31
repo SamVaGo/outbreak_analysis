@@ -76,8 +76,8 @@ conda deactivate
 mkdir -p fastqc_out
 
 conda activate trimgalore
-# Loop through all *_R1.fastq (or _1.fastq) files and find matching pairs
-for r1 in *_R1*.fastq
+# Loop through all *_R1.fastq.gz (or _1.fastq) files and find matching pairs
+for r1 in *_1*.fastq.gz
 do
     # Get the sample name (assumes _R1 or _1 naming)
     base=$(basename "$r1" | sed 's/_R1.*.fastq//;s/_1.*.fastq//')
