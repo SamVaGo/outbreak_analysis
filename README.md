@@ -153,6 +153,42 @@ python mask_gubbins_aln.py --aln clean.full.aln --gff gubbins_recombination_pred
 conda deactivate
 ````
 
+## assembly with spades
+### Input and output directories
+````
+input_dir="/Users/sam/phd/serratia/PRJNA609822/fastq"
+output_base="/Users/sam/phd/serratia/PRJNA609822/fasta"
+````
+
+### Make sure output directory exists
+````
+mkdir -p "$output_base"
+````
+
+### Loop over all R1 FASTQ files
+````
+for r1 in "$input_dir"/*_1_val_1.fq.gz
+do
+    # Get the isolate name (basename without _1_val_1.fq.gz)
+    base=$(basename "$r1" | sed 's/_1_val_1\.fq\.gz//')
+    
+    # Define R2 file
+    r2="$input_dir/${base}_2_val_2.fq.gz"
+
+    # Define SPAdes output folder
+    spades_out="$output_base/${base}_spades"
+
+    # Check that R2 exists
+    if [[ ! -f "$r2" ]]; then
+        echo "❗ Missing R2 for $base — skipping"
+        continue
+    fi
+
+    echo "🧬 Running SPAdes for $base"
+    spades.py -1 "$r1" -2 "$r2" -o "$spades_out" -t 8 --careful
+done
+````
+
 
 
 
