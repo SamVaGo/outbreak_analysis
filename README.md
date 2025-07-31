@@ -91,12 +91,6 @@ do
         echo "Trimming $base"
 
         trim_galore --paired "$r1" "$r2" \
-          --quality 20 \
-          --length 50 \
-          --illumina \
-          --fastqc \
-          --cores 4 \
-          --nextseq 20
     else
         echo "Warning: Missing R2 for $base"
     fi
