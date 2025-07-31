@@ -69,6 +69,39 @@ chewBBACA.py ExtractCgMLST -i /Users/sam/phd/serratia/belgium_outbreaks/MRSA/che
 conda deactivate
 ````
 
+## snippy
+### prepare snippy list
+````
+### Snippy preparation
+# Set the folder where your genomes are located
+genome_folder <- "/path/to/your/genomes"
+
+# List all FASTA files (adjust pattern if needed, e.g., .fa, .fasta, .fna)
+genome_files <- list.files(path = genome_folder, pattern = "\\.(fa|fasta|fna)$", full.names = TRUE)
+
+# Optional: sort files alphabetically
+genome_files <- sort(genome_files)
+
+# Output list to a text file
+output_file <- file.path(genome_folder, "genome_list.txt")
+writeLines(genome_files, con = output_file)
+````
+### run snippy
+````
+conda activate snippy
+snippy-multi input.tab --ref reference/db11.gbk --cpus 12 > runme.sh
+less runme.sh   # check the script makes sense
+sh ./runme.sh   # leave it running over lunch
+snippy-clean_full_aln core.full.aln > clean.full.aln
+conda deactivate
+````
+### remove paraloges
+````
+conda activate gubbins
+run_gubbins.py -p gubbins_ clean.full.aln --starting_tree clean.full.aln.treefile
+python mask_gubbins_aln.py --aln clean.full.aln --gff gubbins_recombination_predictions.gff --out out.masked.aln
+conda deactivate
+````
 
 
 
