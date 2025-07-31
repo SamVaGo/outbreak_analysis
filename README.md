@@ -185,10 +185,9 @@ do
     fi
 
     echo "🧬 Running SPAdes for $base"
-    spades.py -1 "$r1" -2 "$r2" -o "$spades_out" -t 8 --careful
+    spades.py -1 "$r1" -2 "$r2" -o "$spades_out" -t 12
 done
 ````
-
 
 
 
