@@ -69,6 +69,51 @@ chewBBACA.py ExtractCgMLST -i /Users/sam/phd/serratia/belgium_outbreaks/MRSA/che
 conda deactivate
 ````
 
+## preparation pipeline
+### trimgalore
+````
+# Create folder for FastQC results
+mkdir -p fastqc_out
+
+conda activate trimgalore
+# Loop through all *_R1.fastq (or _1.fastq) files and find matching pairs
+for r1 in *_R1*.fastq
+do
+    # Get the sample name (assumes _R1 or _1 naming)
+    base=$(basename "$r1" | sed 's/_R1.*.fastq//;s/_1.*.fastq//')
+
+    # Infer R2 filename
+    r2="${r1/_R1/_R2}"
+    r2="${r2/_1/_2}"
+
+    # Check if R2 exists
+    if [[ -f "$r2" ]]; then
+        echo "Trimming $base"
+
+        trim_galore --paired "$r1" "$r2" \
+          --quality 20 \
+          --length 50 \
+          --illumina \
+          --fastqc \
+          --cores 4 \
+          --nextseq 20
+    else
+        echo "Warning: Missing R2 for $base"
+    fi
+done
+
+# Move all FastQC output files to fastqc_out/
+mv *_fastqc* fastqc_out/
+conda deactivate
+````
+### multiqc
+````
+conda activate multiqc
+multiqc fastqc_out -o multiqc_out
+conda deactivate
+````
+
+
 ## snippy
 ### prepare snippy list
 ````
