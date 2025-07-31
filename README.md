@@ -188,7 +188,27 @@ do
     spades.py -1 "$r1" -2 "$r2" -o "$spades_out" -t 12
 done
 ````
+### copy paste the fasta files to a new directory and rename
+# Set the directory where SPAdes subfolders are located
+````
+spades_dir="/Users/sam/phd/serratia/PRJNA609822/fasta"
+output_dir="${spades_dir}/renamed_contigs"
+````
 
+# Create output directory
+````
+mkdir -p "$output_dir"
+````
+
+# Loop through each subdirectory
+````
+for folder in "$spades_dir"/*_spades; do
+    if [[ -d "$folder" && -f "$folder/contigs.fasta" ]]; then
+        sample_name=$(basename "$folder" | sed 's/_spades$//')
+        cp "$folder/contigs.fasta" "$output_dir/${sample_name}.fasta"
+    fi
+done
+````
 
 
 
