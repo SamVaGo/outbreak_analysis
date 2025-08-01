@@ -73,21 +73,24 @@ conda deactivate
 ### trimgalore
 ````
 conda activate trimgalore
-# Loop through all *_R1.fastq.gz (or _1.fastq) files and find matching pairs
-for r1 in *_1*.fastq.gz
-do
-    # Get the sample name (assumes _R1 or _1 naming)
-    base=$(basename "$r1" | sed 's/_R1.*.fastq//;s/_1.*.fastq//')
+for r1 in *_1.fastq.gz *_R1.fastq.gz; do
+    # Skip if the file doesn't exist (in case the pattern doesn't match anything)
+    [[ -f "$r1" ]] || continue
 
-    # Infer R2 filename
-    r2="${r1/_R1/_R2}"
-    r2="${r2/_1/_2}"
+    if [[ "$r1" == *_1.fastq.gz ]]; then
+        base=$(basename "$r1" _1.fastq.gz)
+        r2="${base}_2.fastq.gz"
+    elif [[ "$r1" == *_R1.fastq.gz ]]; then
+        base=$(basename "$r1" _R1.fastq.gz)
+        r2="${base}_R2.fastq.gz"
+    else
+        echo "Skipping unrecognized file format: $r1"
+        continue
+    fi
 
-    # Check if R2 exists
     if [[ -f "$r2" ]]; then
         echo "Trimming $base"
-
-        trim_galore --paired "$r1" "$r2" \
+        trim_galore --paired "$r1" "$r2"
     else
         echo "Warning: Missing R2 for $base"
     fi
@@ -210,5 +213,41 @@ for folder in "$spades_dir"/*_spades; do
 done
 ````
 
+## Referencegenome free variant calling using ska2
+### 1) index assemblies using ska build
+requires a tab-separated list consisting of the sequence name and assembly file path as input
+ID    path/to/fastq_1    path/to/fastq/2
+...
+````
+conda activate ska2
+ska build -f /home/britto/data/Sam/Serratia/PRJNA609822/prjna609822.tsv -k 41 -o /home/britto/data/Sam/Serratia/PRJNA609822/ska_index --threads 21
+````
+### 2) produce a SNP alignment and calculate distance
+````
+ska align --min-freq 1 --filter no-filter /home/britto/data/Sam/Serratia/PRJNA609822/ska_index.skf -o /home/britto/data/Sam/Serratia/PRJNA609822/ska_alignment.aln --threads 21
+conda deactivate
+conda activate snp-dists
+snp-dists /home/britto/data/Sam/Serratia/PRJNA609822/ska_alignment.aln > /home/britto/data/Sam/Serratia/PRJNA609822/PRJNA609822_ska.tsv
+conda deactivate
+````
 
+### Create tree by aligning with an appropriate reference strain
+determine approriate strain first
+````
+conda activate ska2
+ska map -o /home/britto/data/Sam/Serratia/PRJNA609822/ska_alignment_to_ref_map.aln --ambig-mask --threads 21 REFERENCE.fna.gz /home/britto/data/Sam/Serratia/PRJNA609822/ska_index.skf
+conda deactivate
+````
+use gubbins to remove recombinant regions
+````
+conda activate gubbins
+run_gubbins.py --prefix /home/britto/data/Sam/Serratia/PRJNA609822/gubbins /home/britto/data/Sam/Serratia/PRJNA609822/ska_alignment_to_ref_map.aln --threads 21 --filter-percentage 27.0
+conda deactivate
+````
+create tree with iqtree
+````
+conda activate iqtree
+iqtree gubbins.final_tree.tre -T AUTO -ntmax 21
+conda deactivate
+````
 
