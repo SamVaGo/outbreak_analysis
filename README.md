@@ -231,7 +231,7 @@ snp-dists /home/britto/data/Sam/Serratia/PRJNA609822/ska_alignment.aln > /home/b
 conda deactivate
 ````
 
-### Create tree by aligning with an appropriate reference strain
+### 3) Create tree by aligning with an appropriate reference strain
 determine approriate strain first
 ````
 conda activate ska2
