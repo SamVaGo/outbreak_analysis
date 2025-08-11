@@ -231,6 +231,9 @@ snp-dists /home/britto/data/Sam/Serratia/PRJNA609822/ska_alignment.aln > /home/b
 conda deactivate
 ````
 
+### 2b) Infer SNPs from a skf file using ska lo
+skalo -i my_file.skf
+
 ### 3) Create tree by aligning with an appropriate reference strain
 determine approriate strain first
 ````
